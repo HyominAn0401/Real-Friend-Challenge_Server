@@ -11,14 +11,14 @@ import site.examready2025.quiz.domain.quiz.entity.Quiz;
 import site.examready2025.quiz.domain.quiz.service.QuizService;
 
 @RestController
-@RequestMapping("/api/quizzes")
+@RequestMapping
 @RequiredArgsConstructor
 public class QuizController {
     private final QuizService quizService;
 
-    @PostMapping
-    public ResponseEntity<Quiz> createQuiz(@RequestBody QuizRequestDto requestDto) {
+    @PostMapping("/api/quizzes")
+    public ResponseEntity<String> createQuiz(@RequestBody QuizRequestDto requestDto) {
         Quiz quiz = quizService.createQuiz(requestDto);
-        return ResponseEntity.ok(quiz);
+        return ResponseEntity.ok("퀴즈가 생성되었습니다.");
     }
 }
