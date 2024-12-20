@@ -24,7 +24,7 @@ public class Question {
     private Quiz quiz;
 
     @Column(nullable = false)
-    private Integer order;
+    private Integer questionOrder;
 
     @Column(nullable = false, length = 50)
     private String questionText;
@@ -33,9 +33,9 @@ public class Question {
     private List<Option> options;
 
     @Builder
-    public Question(Quiz quiz, Integer order, String questionText) {
+    public Question(Quiz quiz, Integer questionOrder, String questionText) {
         this.quiz = quiz;
-        this.order = order;
+        this.questionOrder = questionOrder;
         this.questionText = questionText;
     }
 }

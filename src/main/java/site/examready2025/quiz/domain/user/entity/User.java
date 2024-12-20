@@ -3,15 +3,17 @@ package site.examready2025.quiz.domain.user.entity;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import site.examready2025.quiz.domain.quiz.entity.Quiz;
+import site.examready2025.quiz.domain.response.entity.Response;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
 @Getter
-@Builder
-@Table(name = "user")
+@NoArgsConstructor
+@Table(name = "users")
 public class User {
 
     @Id
