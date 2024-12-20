@@ -16,8 +16,8 @@ public class QuizController {
     private final QuizService quizService;
 
     @PostMapping("/api/quizzes")
-    public ResponseEntity<Quiz> createQuiz(@RequestBody QuizRequestDto requestDto) {
+    public ResponseEntity<String> createQuiz(@RequestBody QuizRequestDto requestDto) {
         Quiz quiz = quizService.createQuiz(requestDto);
-        return ResponseEntity.ok(quiz);
+        return ResponseEntity.ok("퀴즈가 생성되었습니다.");
     }
 }
