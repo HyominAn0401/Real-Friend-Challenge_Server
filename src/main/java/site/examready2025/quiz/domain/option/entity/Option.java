@@ -9,7 +9,7 @@ import site.examready2025.quiz.domain.question.entity.Question;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name = "option")
+@Table(name = "choice")
 public class Option {
 
     @Id
