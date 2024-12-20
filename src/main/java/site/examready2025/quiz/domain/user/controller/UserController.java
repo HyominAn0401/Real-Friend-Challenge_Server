@@ -12,7 +12,6 @@ import site.examready2025.quiz.domain.user.service.UserService;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping
 public class UserController {
 
     private final UserService userService;

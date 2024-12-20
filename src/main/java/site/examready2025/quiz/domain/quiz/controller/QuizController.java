@@ -11,7 +11,6 @@ import site.examready2025.quiz.domain.quiz.entity.Quiz;
 import site.examready2025.quiz.domain.quiz.service.QuizService;
 
 @RestController
-@RequestMapping
 @RequiredArgsConstructor
 public class QuizController {
     private final QuizService quizService;

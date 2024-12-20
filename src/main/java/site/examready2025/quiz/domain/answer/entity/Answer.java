@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import site.examready2025.quiz.domain.option.entity.Option;
+import site.examready2025.quiz.domain.choice.entity.Choice;
 import site.examready2025.quiz.domain.question.entity.Question;
 import site.examready2025.quiz.domain.response.entity.Response;
 
@@ -28,12 +28,12 @@ public class Answer {
 
     @ManyToOne
     @JoinColumn(name = "selected_option_id", nullable = false)
-    private Option selectedOption;
+    private Choice selectedChoice;
 
     @Builder
-    public Answer(Response response, Question question, Option selectedOption) {
+    public Answer(Response response, Question question, Choice selectedChoice) {
         this.response = response;
         this.question = question;
-        this.selectedOption = selectedOption;
+        this.selectedChoice = selectedChoice;
     }
 }

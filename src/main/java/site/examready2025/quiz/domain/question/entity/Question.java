@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import site.examready2025.quiz.domain.option.entity.Option;
+import site.examready2025.quiz.domain.choice.entity.Choice;
 import site.examready2025.quiz.domain.quiz.entity.Quiz;
 
 import java.util.List;
@@ -30,7 +30,7 @@ public class Question {
     private String questionText;
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
-    private List<Option> options;
+    private List<Choice> choices;
 
     @Builder
     public Question(Quiz quiz, Integer questionOrder, String questionText) {
