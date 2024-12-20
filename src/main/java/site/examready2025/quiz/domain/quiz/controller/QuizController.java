@@ -11,12 +11,11 @@ import site.examready2025.quiz.domain.quiz.entity.Quiz;
 import site.examready2025.quiz.domain.quiz.service.QuizService;
 
 @RestController
-@RequestMapping("/api/quizzes")
 @RequiredArgsConstructor
 public class QuizController {
     private final QuizService quizService;
 
-    @PostMapping
+    @PostMapping("/api/quizzes")
     public ResponseEntity<Quiz> createQuiz(@RequestBody QuizRequestDto requestDto) {
         Quiz quiz = quizService.createQuiz(requestDto);
         return ResponseEntity.ok(quiz);
