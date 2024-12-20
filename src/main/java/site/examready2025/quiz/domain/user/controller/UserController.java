@@ -12,12 +12,11 @@ import site.examready2025.quiz.domain.user.service.UserService;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/user")
 public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("/create")
+    @PostMapping("/api/users")
     public ResponseEntity<String> createUser(@RequestBody UserRequestDto userRequestDto){
         User user = userService.createUser(userRequestDto);
         return ResponseEntity.ok("사용자가 생성되었습니다.");

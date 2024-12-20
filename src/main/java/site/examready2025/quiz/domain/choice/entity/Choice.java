@@ -1,4 +1,4 @@
-package site.examready2025.quiz.domain.option.entity;
+package site.examready2025.quiz.domain.choice.entity;
 
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -9,8 +9,8 @@ import site.examready2025.quiz.domain.question.entity.Question;
 @Entity
 @Getter
 @NoArgsConstructor
-@Table(name = "option")
-public class Option {
+@Table(name = "choice")
+public class Choice {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +27,7 @@ public class Option {
     private Boolean isCorrect;
 
     @Builder
-    public Option(Question question, String answer, Boolean isCorrect) {
+    public Choice(Question question, String answer, Boolean isCorrect) {
         this.question = question;
         this.answer = answer;
         this.isCorrect = isCorrect;
