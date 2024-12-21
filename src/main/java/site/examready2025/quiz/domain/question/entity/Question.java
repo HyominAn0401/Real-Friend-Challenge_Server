@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import site.examready2025.quiz.domain.choice.entity.Choice;
 import site.examready2025.quiz.domain.quiz.entity.Quiz;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -19,23 +20,14 @@ public class Question {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "quiz_id", nullable = false)
-    private Quiz quiz;
-
-    @Column(nullable = false)
-    private Integer questionOrder;
-
     @Column(nullable = false, length = 50)
     private String questionText;
 
-    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
-    private List<Choice> choices;
+    @OneToMany(mappedBy = "question")
+    private List<Choice> choices = new ArrayList<>();
 
     @Builder
-    public Question(Quiz quiz, Integer questionOrder, String questionText) {
-        this.quiz = quiz;
-        this.questionOrder = questionOrder;
+    public Question(String questionText) {
         this.questionText = questionText;
     }
 }

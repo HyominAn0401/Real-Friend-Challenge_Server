@@ -8,6 +8,7 @@ import site.examready2025.quiz.domain.quiz.entity.Quiz;
 import site.examready2025.quiz.domain.response.entity.Response;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -26,11 +27,11 @@ public class User {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-    @OneToMany(mappedBy = "creator", cascade = CascadeType.ALL)
-    private List<Quiz> createdAuizzes;
+    @OneToMany(mappedBy = "creator")
+    private List<Quiz> quizzes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "responseUser", cascade = CascadeType.ALL)
-    private List<Response> responses;
+    @OneToMany(mappedBy = "responseUser")
+    private List<Response> responses = new ArrayList<>();
 
     @Builder
     public User(String name, LocalDateTime createdAt){

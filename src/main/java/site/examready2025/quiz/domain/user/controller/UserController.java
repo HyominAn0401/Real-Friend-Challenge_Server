@@ -1,13 +1,13 @@
 package site.examready2025.quiz.domain.user.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import site.examready2025.quiz.domain.user.Dto.UserRequestDto;
-import site.examready2025.quiz.domain.user.entity.User;
+import site.examready2025.quiz.domain.user.dto.UserRequestDto;
+import site.examready2025.quiz.domain.user.dto.UserResponseDto;
 import site.examready2025.quiz.domain.user.service.UserService;
 
 @RestController
@@ -16,9 +16,10 @@ public class UserController {
 
     private final UserService userService;
 
+    // 사용자 생성
     @PostMapping("/api/users")
-    public ResponseEntity<String> createUser(@RequestBody UserRequestDto userRequestDto){
-        User user = userService.createUser(userRequestDto);
-        return ResponseEntity.ok("사용자가 생성되었습니다.");
+    public ResponseEntity<UserResponseDto> createUser(@RequestBody UserRequestDto userRequestDto){
+        UserResponseDto userResponseDto = userService.createUser(userRequestDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(userResponseDto);
     }
 }

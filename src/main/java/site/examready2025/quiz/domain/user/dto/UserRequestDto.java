@@ -1,4 +1,4 @@
-package site.examready2025.quiz.domain.user.Dto;
+package site.examready2025.quiz.domain.user.dto;
 
 import lombok.Getter;
 
@@ -6,4 +6,5 @@ import lombok.Getter;
 public class UserRequestDto {
 
     private String name;
+
 }
