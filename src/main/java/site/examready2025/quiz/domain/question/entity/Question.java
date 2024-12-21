@@ -23,8 +23,8 @@ public class Question {
     @Column(nullable = false, length = 50)
     private String questionText;
 
-    @OneToMany(mappedBy = "question")
-    private List<Choice> choices = new ArrayList<>();
+//    @OneToMany(mappedBy = "question")
+//    private List<Choice> choices = new ArrayList<>();
 
     @Builder
     public Question(String questionText) {
