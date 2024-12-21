@@ -13,9 +13,10 @@ on:
   pull_request:
     branches: [ "develop" ]
 env:
+  IMAGE_TAG: ${{ github.sha }}
   AWS_REGION: ap-northeast-2  # set this to your preferred AWS region
   ECR_REPOSITORY: ${{ secrets.ECR_REPO }} # set this to your Amazon ECR repository name
-  S3_BUCKET_NAME: ${{ secrets.S3_BUCKET }}
+  S3_BUCKET_NAME: ${{ secrets.S3_BUCKET }} 
   CODE_DEPLOY_APPLICATION_NAME: ${{ secrets.CODE_DEPLOY_APPLICATION_NAME }}  code deploy 애플리케이션 이름
   CODE_DEPLOY_DEPLOYMENT_GROUP_NAME : ${{ secrets.DEPLOYMENT_GROUP_NAME }} 배포 그룹 이름. // ASG 그룹
   
@@ -74,11 +75,16 @@ jobs:
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
-
+        
+    #code deploy용 env file 생성
+    - name: Create env file
+      run: |
+        echo "ECR_REGISTRY=${{ steps.login-ecr.outputs.registry }}" > scripts/env.sh
+        echo "ECR_REPOSITORY=${{ secrets.ECR_REPO }}" >> scripts/env.sh
+        echo "IMAGE_TAG=${{ github.sha }}" >> scripts/env.sh
+        
     # S3에 스크립트 업로드(code deploy)
     - name: upload to s3
-      env:
-        IMAGE_TAG: ${{ github.sha }}
       run: |
         zip -r deploy-$IMAGE_TAG.zip ./scripts appspec.yml
         aws s3 cp --region ap-northeast-2 --acl private ./deploy-$IMAGE_TAG.zip s3://$S3_BUCKET_NAME
@@ -86,8 +92,6 @@ jobs:
     # Deploy
     # S3에 업로드 했던 내용을 가지고 와서, code deploy 실행
     - name: Deploy
-      env:
-        IMAGE_TAG: ${{ github.sha }}
       run: |
         aws deploy create-deployment \
         --application-name ${{ env.CODE_DEPLOY_APPLICATION_NAME }} \
