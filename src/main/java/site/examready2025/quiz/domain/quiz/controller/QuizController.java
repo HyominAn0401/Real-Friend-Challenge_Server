@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import site.examready2025.quiz.domain.quiz.dto.QuizRequestDto;
 import site.examready2025.quiz.domain.quiz.dto.QuizResponseDto;
-import site.examready2025.quiz.domain.quiz.entity.Quiz;
 import site.examready2025.quiz.domain.quiz.service.QuizService;
 
 @RestController

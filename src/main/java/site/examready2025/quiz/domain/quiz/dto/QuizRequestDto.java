@@ -9,5 +9,4 @@ import java.util.List;
 @Getter
 public class QuizRequestDto {
     private Long creatorUserId;
-    private List<ChoiceRequestDto> choices;
 }

@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import site.examready2025.quiz.domain.question.entity.Question;
+import site.examready2025.quiz.domain.quiz.entity.Quiz;
 
 @Entity
 @Getter
@@ -16,7 +17,11 @@ public class Choice {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "quiz_id", nullable = false)
+    private Quiz quiz;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_id", nullable = false)
     private Question question;
 
@@ -27,7 +32,8 @@ public class Choice {
     private boolean isCorrect;
 
     @Builder
-    public Choice(Question question, String answer, boolean isCorrect) {
+    public Choice(Quiz quiz, Question question, String answer, boolean isCorrect) {
+        this.quiz = quiz;
         this.question = question;
         this.answer = answer;
         this.isCorrect = isCorrect;
