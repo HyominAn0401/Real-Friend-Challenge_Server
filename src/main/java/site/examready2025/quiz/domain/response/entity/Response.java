@@ -32,13 +32,10 @@ public class Response {
     private Integer score;
 
     @Column(nullable = false)
-    private Boolean isCompleted;
-
-    @OneToMany(mappedBy = "response", cascade = CascadeType.ALL)
-    private List<Answer> answers;
+    private boolean isCompleted;
 
     @Builder
-    public Response(Quiz quiz, User responseUser, Integer score, Boolean isCompleted) {
+    public Response(Quiz quiz, User responseUser, Integer score, boolean isCompleted) {
         this.quiz = quiz;
         this.responseUser = responseUser;
         this.score = score;

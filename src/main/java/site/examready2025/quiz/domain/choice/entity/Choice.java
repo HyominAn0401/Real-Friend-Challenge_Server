@@ -24,10 +24,10 @@ public class Choice {
     private String answer;
 
     @Column(nullable = false)
-    private Boolean isCorrect;
+    private boolean isCorrect;
 
     @Builder
-    public Choice(Question question, String answer, Boolean isCorrect) {
+    public Choice(Question question, String answer, boolean isCorrect) {
         this.question = question;
         this.answer = answer;
         this.isCorrect = isCorrect;
