@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import site.examready2025.quiz.domain.choice.dto.ChoiceRequestDto;
+import site.examready2025.quiz.domain.choice.dto.ChoiceResponseDto;
 import site.examready2025.quiz.domain.choice.entity.Choice;
 import site.examready2025.quiz.domain.choice.repository.ChoiceRepository;
 import site.examready2025.quiz.domain.question.entity.Question;
@@ -21,6 +22,12 @@ public class ChoiceService {
     private final QuestionRepository questionRepository;
     private final ChoiceRepository choiceRepository;
     private final QuizRepository quizRepository;
+
+
+    public List<ChoiceResponseDto> getChoicesByQuiz(Long quizId){
+        List<Choice> choices = choiceRepository.findByQuizId(quizId);
+        return choices.stream().map(choice -> new ChoiceResponseDto(choice.getId(), choice.getQuestion().getId(), choice.getAnswer(), choice.isCorrect())).toList();
+    }
 
     public void addChoices(Long quizId, List<ChoiceRequestDto> choiceRequestDtos){
 
