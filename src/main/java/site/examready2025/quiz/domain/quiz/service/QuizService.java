@@ -45,4 +45,9 @@ public class QuizService {
                 .creatorUserId(creator.getId())
                 .build();
     }
+
+    // 퀴즈 조회
+    public Quiz getQuizById(Long quizId){
+        return quizRepository.findById(quizId).orElseThrow(()-> new IllegalArgumentException("해당 퀴즈를 찾을 수 없습니다. 퀴즈 id : "+quizId));
+    }
 }

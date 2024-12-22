@@ -15,6 +15,15 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    public User createUserEntity(String username){
+        User user = User.builder()
+                .name(username)
+                .createdAt(LocalDateTime.now())
+                .build();
+        return userRepository.save(user);
+
+    }
+
     public UserResponseDto createUser(UserRequestDto userRequestDto){
         User user = User.builder()
                 .name(userRequestDto.getName())

@@ -32,8 +32,8 @@ public class Quiz {
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
-//    @OneToMany(mappedBy = "quiz")
-//    private List<Response> responses = new ArrayList<>();
+    @OneToMany(mappedBy = "quiz")
+    private List<Response> responses = new ArrayList<>();
 
     @Builder
     public Quiz(User creator, String title, LocalDateTime createdAt){

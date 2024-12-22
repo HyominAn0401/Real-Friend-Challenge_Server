@@ -22,17 +22,19 @@ public class ChoiceService {
     private final ChoiceRepository choiceRepository;
     private final QuizRepository quizRepository;
 
-    public void addChoices(List<ChoiceRequestDto> choiceRequestDtos){
+    public void addChoices(Long quizId, List<ChoiceRequestDto> choiceRequestDtos){
+
+        Quiz quiz = quizRepository.findById(quizId).orElseThrow(()-> new IllegalArgumentException("해당 퀴즈를 찾을 수 없습니다. 퀴즈 id : "+quizId));
         for(ChoiceRequestDto dto : choiceRequestDtos){
-            Quiz quiz = quizRepository.findById(dto.getQuizId()).orElseThrow(()-> new IllegalArgumentException("해당 퀴즈를 찾을 수 없습니다. 퀴즈 id: "+dto.getQuizId()));
+            //Quiz quiz = quizRepository.findById(dto.getQuizId()).orElseThrow(()-> new IllegalArgumentException("해당 퀴즈를 찾을 수 없습니다. 퀴즈 id: "+dto.getQuizId()));
 
             Question question = questionRepository.findById(dto.getQuestionId())
                     .orElseThrow(()-> new IllegalArgumentException("해당 질문을 찾을 수 없습니다. 질문 Id : "+dto.getQuestionId()));
 
             // 정답
             Choice correct = Choice.builder()
-                    .quiz(quiz)
                     .question(question)
+                    .quiz(quiz)
                     .answer(dto.getCorrectAnswer())
                     .isCorrect(true)
                     .build();
