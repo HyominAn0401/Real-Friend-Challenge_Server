@@ -13,6 +13,7 @@ spring:
       hibernate.dialect: org.hibernate.dialect.MySQL8Dialect
       hibernate.format_sql: true
       hibernate.transaction.jta.platform: org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform
+<<<<<<< Updated upstream
 
 management:
   endpoint:
@@ -22,3 +23,5 @@ management:
     web:
       exposure:
         include: "health"
+=======
+>>>>>>> Stashed changes
