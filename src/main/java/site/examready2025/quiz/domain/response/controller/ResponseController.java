@@ -3,10 +3,7 @@ package site.examready2025.quiz.domain.response.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import site.examready2025.quiz.domain.response.dto.ResponseDto;
 import site.examready2025.quiz.domain.response.dto.ResponseRequestDto;
 import site.examready2025.quiz.domain.response.entity.Response;
@@ -14,6 +11,7 @@ import site.examready2025.quiz.domain.response.service.ResponseService;
 
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:5173")
 public class ResponseController {
 
     private final ResponseService responseService;
