@@ -1,1 +1,27 @@
-spring.application.name=quiz
+spring:
+  datasource:
+    url: ${mysql.url}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: ${mysql.username}
+    password: ${mysql.password}
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate.dialect: org.hibernate.dialect.MySQL8Dialect
+      hibernate.format_sql: true
+      hibernate.transaction.jta.platform: org.hibernate.engine.transaction.jta.platform.internal.NoJtaPlatform
+<<<<<<< Updated upstream
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: "health"
+=======
+>>>>>>> Stashed changes
