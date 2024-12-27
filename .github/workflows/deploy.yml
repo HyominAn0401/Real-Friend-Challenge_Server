@@ -41,9 +41,14 @@ jobs:
         distribution: 'temurin'
 
     # 환경 변수 설정
-    - name: Make application.yml
+    - name: Make env.properties
       run: |
         echo "${{ secrets.ENV }}" > ./src/main/resources/properties/env.properties
+
+
+    # 환경 변수 설정
+    - name: Make application.yml
+      run: |
         echo "${{ secrets.APPLICATION }}" > ./src/main/resources/application.yml
         
         
