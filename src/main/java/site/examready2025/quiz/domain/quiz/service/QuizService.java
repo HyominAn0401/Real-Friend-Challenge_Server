@@ -50,4 +50,11 @@ public class QuizService {
     public Quiz getQuizById(Long quizId){
         return quizRepository.findById(quizId).orElseThrow(()-> new IllegalArgumentException("해당 퀴즈를 찾을 수 없습니다. 퀴즈 id : "+quizId));
     }
+
+    // 퀴즈 생성자 조회
+    @Transactional(readOnly = true)
+    public String getQuizCreatorName(Long quizId){
+        Quiz quiz = quizRepository.findById(quizId).orElseThrow(()-> new IllegalArgumentException("해당 퀴즈를 찾을 수 없습니다. 퀴즈 id: "+ quizId));
+        return quiz.getCreator().getName();
+    }
 }
