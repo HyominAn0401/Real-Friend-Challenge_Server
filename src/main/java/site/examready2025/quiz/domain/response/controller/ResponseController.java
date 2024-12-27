@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import site.examready2025.quiz.domain.response.dto.ResponseDto;
 import site.examready2025.quiz.domain.response.dto.ResponseRequestDto;
+import site.examready2025.quiz.domain.response.dto.ResponseResultDto;
 import site.examready2025.quiz.domain.response.entity.Response;
 import site.examready2025.quiz.domain.response.service.ResponseService;
 
@@ -30,9 +31,10 @@ public class ResponseController {
         return ResponseEntity.ok(score);
     }
 
-    // 퀴즈 생성자 이름 반환
-//    @GetMapping("/api/responses/{responseId}/creator")
-//    public String getCreatorUserName(@PathVariable("responseId") Long responseId){
-//        return responseService.getCreatorName(responseId);
-//    }
+    // 퀴즈 풀이 결과 조회
+    @GetMapping("/api/responses/{responseId}/results")
+    public ResponseEntity<ResponseResultDto> getResponseResult(@PathVariable("responseId") Long responseId){
+        ResponseResultDto result = responseService.getResponseResult(responseId);
+        return ResponseEntity.ok(result);
+    }
 }
