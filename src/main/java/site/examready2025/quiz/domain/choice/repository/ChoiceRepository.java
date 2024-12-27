@@ -10,8 +10,9 @@ import java.util.Optional;
 @Repository
 public interface ChoiceRepository extends JpaRepository<Choice, Long> {
 
-    //@Query("SELECT c FROM Choice c WHERE c.quiz.id = :quizId AND c.question.id = :questionId AND c.id = :choiceId")
     Optional<Choice> findByQuizIdAndQuestionIdAndId(Long quizId, Long questionId, Long choiceId);
 
     List<Choice> findByQuizId(Long quizId);
+
+    Optional<Choice> findFirstByQuestionIdAndIsCorrectTrue(Long questionId);
 }
