@@ -29,4 +29,10 @@ public class ResponseController {
         int score = responseService.calculateScore(responseId);
         return ResponseEntity.ok(score);
     }
+
+    // 퀴즈 생성자 이름 반환
+    @GetMapping("/api/responses/{responseId}/creator")
+    public String getCreatorUserName(@PathVariable("responseId") Long responseId){
+        return responseService.getCreatorName(responseId);
+    }
 }
