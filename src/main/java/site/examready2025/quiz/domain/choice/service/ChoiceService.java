@@ -3,8 +3,10 @@ package site.examready2025.quiz.domain.choice.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import site.examready2025.quiz.domain.choice.dto.ChoiceDto;
 import site.examready2025.quiz.domain.choice.dto.ChoiceRequestDto;
 import site.examready2025.quiz.domain.choice.dto.ChoiceResponseDto;
+import site.examready2025.quiz.domain.choice.dto.ChoicesWithQuestionDto;
 import site.examready2025.quiz.domain.choice.entity.Choice;
 import site.examready2025.quiz.domain.choice.repository.ChoiceRepository;
 import site.examready2025.quiz.domain.question.entity.Question;
@@ -13,6 +15,8 @@ import site.examready2025.quiz.domain.quiz.entity.Quiz;
 import site.examready2025.quiz.domain.quiz.repository.QuizRepository;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,7 +26,6 @@ public class ChoiceService {
     private final QuestionRepository questionRepository;
     private final ChoiceRepository choiceRepository;
     private final QuizRepository quizRepository;
-
 
     public List<ChoiceResponseDto> getChoicesByQuiz(Long quizId){
         List<Choice> choices = choiceRepository.findByQuizId(quizId);
@@ -58,5 +61,21 @@ public class ChoiceService {
                 choiceRepository.save(wrong);
             }
         }
+    }
+
+    // 보기 데이터 반환
+    public List<ChoicesWithQuestionDto> getChoicesWithQuestion(Long quizId){
+        List<Choice> choices = choiceRepository.findByQuizId(quizId);
+        Map<Long, List<ChoiceDto>> groupedChoices = choices.stream()
+                .collect(Collectors.groupingBy(
+                        choice -> choice.getQuestion().getId(),
+                        Collectors.mapping(
+                                choice -> new ChoiceDto(choice.getId(), choice.getAnswer(), choice.isCorrect()), // DTO 변환
+                                Collectors.toList()
+                        )
+                ));
+        return groupedChoices.entrySet().stream()
+                .map(entry -> new ChoicesWithQuestionDto(entry.getKey(), entry.getValue()))
+                .toList();
     }
 }

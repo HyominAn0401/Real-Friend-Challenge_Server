@@ -24,6 +24,13 @@ public class ResponseService {
     private final UserService userService;
     private final AnswerRepository answerRepository;
 
+    // 퀴즈 생성자 이름 반환
+    @Transactional(readOnly = true)
+    public String getCreatorName(Long responseId){
+        Response response = responseRepository.findById(responseId).orElseThrow(()-> new IllegalArgumentException("해당 퀴즈 세션을 찾을 수 없습니다. responseId: "+responseId));
+        return response.getQuiz().getCreator().getName();
+    }
+
     // 퀴즈 세션 생성
     public Response createResponse(Long quizId, String userName){
         User user = userService.createUserEntity(userName);
