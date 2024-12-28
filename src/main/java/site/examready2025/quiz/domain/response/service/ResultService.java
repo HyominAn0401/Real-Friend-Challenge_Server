@@ -21,17 +21,18 @@ public class ResultService {
 
     public ResultDto getResults(Long quizId) {
 
+        // 완료된 Response만 가져오기
         List<Response> responses = responseRepository.findByQuizIdAndIsCompletedTrue(quizId);
 
-        // 점수 내림차순, 동점이면 생성 시간 기준
-        responses.sort(Comparator.comparingInt(Response::getScore).reversed()
-                .thenComparingLong(Response::getId).reversed());
+        // 점수 내림차순
+        responses.sort(Comparator
+                .comparingInt(Response::getScore).reversed()
+                .thenComparing((r1, r2)-> Long.compare(r2.getId(), r1.getId())));
 
         List<RankDto> rankings = new ArrayList<>();
-
         int rank = 1;
 
-        for(int i = 0; i < responses.size(); i++) {
+        for (int i = 0; i < responses.size(); i++) {
             Response current = responses.get(i);
 
             rankings.add(new RankDto(
