@@ -10,4 +10,6 @@ import java.util.List;
 public interface ResponseRepository extends JpaRepository<Response, Long> {
 
     List<Response> findByQuizId(Long quizId);
+
+    List<Response> findByQuizIdAndIsCompletedTrue(Long quizId);
 }
