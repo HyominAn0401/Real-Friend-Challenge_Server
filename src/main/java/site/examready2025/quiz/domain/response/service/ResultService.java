@@ -19,32 +19,62 @@ public class ResultService {
 
     private final ResponseRepository responseRepository;
 
-    public ResultDto getResults(Long quizId, Long userId) {
+    public ResultDto getResults(Long quizId) {
 
-        List<Response> responses = responseRepository.findByQuizId(quizId);
+        // 완료된 Response만 가져오기
+        List<Response> responses = responseRepository.findByQuizIdAndIsCompletedTrue(quizId);
 
-        responses.sort(Comparator.comparing(Response::getScore).reversed().thenComparing(r -> r.getResponseUser().getName()));
+        // 점수 내림차순
+        responses.sort(Comparator
+                .comparingInt(Response::getScore).reversed()
+                .thenComparing((r1, r2)-> Long.compare(r2.getId(), r1.getId())));
 
         List<RankDto> rankings = new ArrayList<>();
-        Integer userRank = null;
-        Integer userScore = null;
-        int rank= 1;
+        int rank = 1;
 
-        for(int i=0; i<responses.size(); i++){
+        for (int i = 0; i < responses.size(); i++) {
             Response current = responses.get(i);
 
-            if(i>0 && current.getScore()!=responses.get(i-1).getScore())
-                rank = i+1;
+            rankings.add(new RankDto(
+                    current.getResponseUser().getId(),
+                    current.getResponseUser().getName(),
+                    current.getScore(),
+                    rank
+            ));
 
-            rankings.add(new RankDto(current.getResponseUser().getId(), current.getResponseUser().getName(), current.getScore(), rank));
-
-            if(current.getResponseUser().getId().equals(userId)){
-                userRank = rank;
-                userScore = current.getScore();
-            }
+            rank++;
         }
 
-        return new ResultDto(quizId, userRank, userScore, rankings);
+        return new ResultDto(rankings);
     }
+
+//    public ResultDto getResults(Long quizId, Long userId) {
+//
+//        List<Response> responses = responseRepository.findByQuizId(quizId);
+//
+//        responses.sort(Comparator.comparing(Response::getScore).reversed().thenComparing(r -> r.getResponseUser().getName()));
+//
+//        List<RankDto> rankings = new ArrayList<>();
+//        Integer userRank = null;
+//        Integer userScore = null;
+//        int rank= 1;
+//
+//        for(int i=0; i<responses.size(); i++){
+//            Response current = responses.get(i);
+//
+//            // 순위 계산
+//            if(i>0 && current.getScore()!=responses.get(i-1).getScore())
+//                rank = i+1;
+//
+//            rankings.add(new RankDto(current.getResponseUser().getId(), current.getResponseUser().getName(), current.getScore(), rank));
+//
+//            if(current.getResponseUser().getId().equals(userId)){
+//                userRank = rank;
+//                userScore = current.getScore();
+//            }
+//        }
+//
+//        return new ResultDto(quizId, userRank, userScore, rankings);
+//    }
 
 }
