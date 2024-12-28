@@ -8,9 +8,9 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 public class ResultDto {
-    private Long quizId;
-    private Integer userRank;
-    private Integer userScore;
+//    private Long quizId;
+//    private Integer userRank;
+//    private Integer userScore;
     private List<RankDto> rankings;
 }
 
