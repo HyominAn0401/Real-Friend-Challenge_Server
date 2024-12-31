@@ -20,7 +20,7 @@ public class ShareService {
                 .orElseThrow(() -> new IllegalArgumentException("퀴즈를 찾을 수 없습니다. 퀴즈 ID: " + requestDto.getQuizId()));
 
         // 공유 URL 생성
-        String shareUrl = "https://welcome2025.com/quiz/" + quiz.getId();
+        String shareUrl = "https://welcome2025.site/quiz/" + quiz.getId();
 
         return ShareResponseDto.builder()
                 .shareUrl(shareUrl)
