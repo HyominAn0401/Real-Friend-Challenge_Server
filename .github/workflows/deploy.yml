@@ -13,17 +13,18 @@ on:
   pull_request:
     branches: [ "develop" ]
 env:
-  AWS_REGION: ap-northeast-2  # set this to your preferred AWS region
-  ECR_REPOSITORY: ${{ secrets.ECR_REPO }} # set this to your Amazon ECR repository name
-  S3_BUCKET_NAME: ${{ secrets.S3_BUCKET }}
-  CODE_DEPLOY_APPLICATION_NAME: ${{ secrets.CODE_DEPLOY_APPLICATION_NAME }}  code deploy 애플리케이션 이름
-  CODE_DEPLOY_DEPLOYMENT_GROUP_NAME : ${{ secrets.DEPLOYMENT_GROUP_NAME }} 배포 그룹 이름. // ASG 그룹
+  IMAGE_TAG: ${{ github.sha }}
+  AWS_REGION: ap-northeast-2 
+  ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }} 
+  S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }} 
+  CODE_DEPLOY_APPLICATION_NAME: ${{ secrets.CODE_DEPLOY_APPLICATION_NAME }}  
+  CODE_DEPLOY_DEPLOYMENT_GROUP_NAME : ${{ secrets.DEPLOYMENT_GROUP_NAME }} 
   
 jobs:
   build:
-
     runs-on: ubuntu-latest
     permissions:
+      id-token: write
       contents: read
 
     steps:
@@ -40,18 +41,22 @@ jobs:
         distribution: 'temurin'
 
     # 환경 변수 설정
-    - name: Make application.properties
+    - name: Make env.properties
       run: |
-        cd ./src/main/resources
-        touch ./application.properties
-        echo "${{ secrets.APPLICATION }}" > ./application.properties
-      shell: bash
+        echo "${{ secrets.ENV }}" > ./src/main/resources/properties/env.properties
+
+
+    # 환경 변수 설정
+    - name: Make application.yml
+      run: |
+        echo "${{ secrets.APPLICATION }}" > ./src/main/resources/application.yml
+        
         
     - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
+      uses: gradle/actions/setup-gradle@v4
 
     - name: Build with Gradle Wrapper
-      run: ./gradlew build
+      run: ./gradlew clean bootJar -x test
       
     # AWS credentials
     - name: AWS IAM 사용자 설정
@@ -69,28 +74,30 @@ jobs:
     - name: Docker build & push 
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        IMAGE_TAG: ${{ github.sha }}
       run: |
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
-
+        
+    #code deploy용 env file 생성
+    - name: Create env file
+      run: |
+        echo "ECR_REGISTRY=${{ steps.login-ecr.outputs.registry }}" > scripts/env.sh
+        echo "ECR_REPOSITORY=${{ secrets.ECR_REPOSITORY }}" >> scripts/env.sh
+        echo "IMAGE_TAG=${{ github.sha }}" >> scripts/env.sh
+        
     # S3에 스크립트 업로드(code deploy)
     - name: upload to s3
-      env:
-        IMAGE_TAG: ${{ github.sha }}
       run: |
         zip -r deploy-$IMAGE_TAG.zip ./scripts appspec.yml
-        aws s3 cp --region ap-northeast-2 --acl private ./deploy-$IMAGE_TAG.zip s3://$S3_BUCKET_NAME
+        aws s3 cp --region ap-northeast-2 --acl private ./deploy-$IMAGE_TAG.zip s3://$S3_BUCKET_NAME/$ECR_REPOSITORY
         
     # Deploy
     # S3에 업로드 했던 내용을 가지고 와서, code deploy 실행
     - name: Deploy
-      env:
-        IMAGE_TAG: ${{ github.sha }}
       run: |
         aws deploy create-deployment \
         --application-name ${{ env.CODE_DEPLOY_APPLICATION_NAME }} \
         --deployment-config-name CodeDeployDefault.AllAtOnce \
         --deployment-group-name ${{ env.CODE_DEPLOY_DEPLOYMENT_GROUP_NAME }} \
-        --s3-location bucket=$S3_BUCKET_NAME,key=deploy-$IMAGE_TAG.zip,bundleType=zip
+        --s3-location bucket=$S3_BUCKET_NAME,key=$ECR_REPOSITORY,bundleType=zip
