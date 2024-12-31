@@ -10,7 +10,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/api/**")  // API 경로에 대해 CORS 설정
-                .allowedOrigins("http://examready2025.site")  // 프론트엔드 도메인
+                .allowedOrigins("https://examready2025.site")  // 프론트엔드 도메인
                 .allowedMethods("GET", "POST", "PUT", "DELETE")  // 허용할 HTTP 메소드
                 .allowedHeaders("*")  // 모든 헤더 허용
                 .allowCredentials(true);
