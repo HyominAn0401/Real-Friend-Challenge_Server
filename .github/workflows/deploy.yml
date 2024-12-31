@@ -10,8 +10,7 @@ name: Deploy WAS
 on:
   push:
     branches: [ "develop" ]
-  pull_request:
-    branches: [ "develop" ]
+    
 env:
   IMAGE_TAG: ${{ github.sha }}
   AWS_REGION: ap-northeast-2 
