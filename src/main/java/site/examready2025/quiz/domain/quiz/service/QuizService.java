@@ -43,6 +43,7 @@ public class QuizService {
                 .title(quiz.getTitle())
                 .createdAt(quiz.getCreatedAt())
                 .creatorUserId(creator.getId())
+                .shareKey(quiz.getShareKey())
                 .build();
     }
 
