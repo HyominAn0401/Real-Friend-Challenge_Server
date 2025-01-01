@@ -12,4 +12,5 @@ public class QuizResponseDto {
     private Long creatorUserId;
     private String title;
     private LocalDateTime createdAt;
+    private String shareKey;
 }
