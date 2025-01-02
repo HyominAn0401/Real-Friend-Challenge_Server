@@ -20,18 +20,18 @@ public class AnswerController {
 
     private final AnswerService answerService;
 
-//    @PostMapping("/api/answers")
-//    public ResponseEntity<String> saveAnswers(@RequestBody AnswerBatchRequestDto requestDto){
-//        answerService.saveAnswers(requestDto.getResponseId(), requestDto.getAnswers());
-//        return ResponseEntity.status(HttpStatus.CREATED).body("답변 저장 완료");
-//    }
-
     @PostMapping("/api/answers")
     public ResponseEntity<String> saveAnswers(@RequestBody AnswerBatchRequestDto requestDto){
-        answerService.saveAnswers(requestDto.getResponseId(), requestDto.getQuizId(), requestDto.getAnswers());
-
+        answerService.saveAnswers(requestDto.getResponseId(), requestDto.getShareKey(), requestDto.getAnswers());
         return ResponseEntity.status(HttpStatus.CREATED).body("답변 저장 완료");
     }
+
+//    @PostMapping("/api/answers")
+//    public ResponseEntity<String> saveAnswers(@RequestBody AnswerBatchRequestDto requestDto){
+//        answerService.saveAnswers(requestDto.getResponseId(), requestDto.getQuizId(), requestDto.getAnswers());
+//
+//        return ResponseEntity.status(HttpStatus.CREATED).body("답변 저장 완료");
+//    }
 
 
 }

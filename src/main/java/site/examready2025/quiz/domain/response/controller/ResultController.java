@@ -13,15 +13,15 @@ public class ResultController {
 
     private final ResultService resultService;
 
-    @GetMapping("/api/result/{quizId}")
-    public ResponseEntity<ResultDto> getResults(@PathVariable("quizId") Long quizId){
-        ResultDto resultDto = resultService.getResults(quizId);
+    @GetMapping("/api/result/{shareKey}")
+    public ResponseEntity<ResultDto> getResults(@PathVariable("shareKey") String shareKey){
+        ResultDto resultDto = resultService.getResults(shareKey);
         return ResponseEntity.ok(resultDto);
     }
 
 //    @GetMapping("/api/result/{quizId}")
-//    public ResponseEntity<ResultDto> getResults(@PathVariable("quizId") Long quizId, @RequestParam("userId") Long userId){
-//        ResultDto resultDto = resultService.getResults(quizId, userId);
+//    public ResponseEntity<ResultDto> getResults(@PathVariable("quizId") Long quizId){
+//        ResultDto resultDto = resultService.getResults(quizId);
 //        return ResponseEntity.ok(resultDto);
 //    }
 }

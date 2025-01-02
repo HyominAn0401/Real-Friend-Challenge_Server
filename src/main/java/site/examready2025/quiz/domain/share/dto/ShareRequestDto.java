@@ -4,5 +4,6 @@ import lombok.Getter;
 
 @Getter
 public class ShareRequestDto {
-    private Long quizId;
+    //private Long quizId;
+    private String shareKey;
 }

@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @Getter
 @Builder
 public class QuizResponseDto {
-    private Long quizId;
+//    private Long quizId;
     private Long creatorUserId;
     private String title;
     private LocalDateTime createdAt;
