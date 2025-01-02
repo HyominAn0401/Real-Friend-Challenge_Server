@@ -29,20 +29,12 @@ public class ResponseService {
     private final UserService userService;
     private final AnswerRepository answerRepository;
     private final ChoiceRepository choiceRepository;
+    private final QuizRepository quizRepository;
     private final ResultService resultService;
 
-    // 퀴즈 생성자 이름 반환
-    @Transactional(readOnly = true)
-    public String getCreatorName(Long responseId){
-        Response response = responseRepository.findById(responseId).orElseThrow(()-> new IllegalArgumentException("해당 퀴즈 세션을 찾을 수 없습니다. responseId: "+responseId));
-        return response.getQuiz().getCreator().getName();
-    }
-
-    // 퀴즈 세션 생성
-    public Response createResponse(Long quizId, String userName){
+    public Response createResponse(String shareKey, String userName){
         User user = userService.createUserEntity(userName);
-
-        Quiz quiz = quizService.getQuizById(quizId);
+        Quiz quiz = quizRepository.findByShareKey(shareKey).orElseThrow(()-> new IllegalArgumentException("해당 퀴즈를 찾을 수 없습니다."));
 
         Response response = Response.builder()
                 .quiz(quiz)
@@ -53,6 +45,22 @@ public class ResponseService {
 
         return responseRepository.save(response);
     }
+
+    // 퀴즈 세션 생성
+//    public Response createResponse(Long quizId, String userName){
+//        User user = userService.createUserEntity(userName);
+//
+//        Quiz quiz = quizService.getQuizById(quizId);
+//
+//        Response response = Response.builder()
+//                .quiz(quiz)
+//                .responseUser(user)
+//                .score(0)
+//                .isCompleted(false)
+//                .build();
+//
+//        return responseRepository.save(response);
+//    }
 
     public ResponseResultDto getResponseResult(Long responseId){
         Response response = responseRepository.findById(responseId).orElseThrow(()->new IllegalArgumentException("해당 퀴즈 세션을 찾을 수 없습니다. response id: "+responseId));
@@ -79,7 +87,7 @@ public class ResponseService {
         }).toList();
 
         return ResponseResultDto.builder()
-                .quizId(response.getQuiz().getId())
+                //.quizId(response.getQuiz().getId())
                 .responseId(response.getId())
                 .results(results)
                 .build();

@@ -21,9 +21,16 @@ public class ResponseController {
     // 생성
     @PostMapping("/api/responses")
     public ResponseEntity<ResponseDto> createResponse(@RequestBody ResponseRequestDto responseRequestDto){
-        Response response = responseService.createResponse(responseRequestDto.getQuizId(), responseRequestDto.getUserName());
+        Response response = responseService.createResponse(responseRequestDto.getShareKey(), responseRequestDto.getUserName());
         return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseDto(response));
     }
+
+    // 생성
+//    @PostMapping("/api/responses")
+//    public ResponseEntity<ResponseDto> createResponse(@RequestBody ResponseRequestDto responseRequestDto){
+//        Response response = responseService.createResponse(responseRequestDto.getQuizId(), responseRequestDto.getUserName());
+//        return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseDto(response));
+//    }
 
     // 제출
 //    @PostMapping("/api/responses/{responseId}/submit")

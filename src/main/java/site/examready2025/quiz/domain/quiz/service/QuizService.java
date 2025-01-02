@@ -20,7 +20,6 @@ public class QuizService {
 
     private final QuizRepository quizRepository;
     private final UserRepository userRepository;
-    private final ChoiceService choiceService;
 
     public QuizResponseDto createQuiz(QuizRequestDto requestDto) {
         // 사용자(생성자) 확인
@@ -38,24 +37,43 @@ public class QuizService {
                 .build();
         quizRepository.save(quiz);
 
-        return QuizResponseDto.builder()
-                .quizId(quiz.getId())
-                .title(quiz.getTitle())
-                .createdAt(quiz.getCreatedAt())
-                .creatorUserId(creator.getId())
-                .shareKey(quiz.getShareKey())
-                .build();
+        return mapperToResponseDto(quiz);
     }
 
-    // 퀴즈 조회
+    // id기반 퀴즈 조회
     public Quiz getQuizById(Long quizId){
         return quizRepository.findById(quizId).orElseThrow(()-> new IllegalArgumentException("해당 퀴즈를 찾을 수 없습니다. 퀴즈 id : "+quizId));
     }
 
-    // 퀴즈 생성자 조회
+    // shareKey 기반 퀴즈 조회
+    @Transactional(readOnly = true)
+    public QuizResponseDto getQuizByShareKey(String shareKey){
+        Quiz quiz = quizRepository.findByShareKey(shareKey).orElseThrow(()-> new IllegalArgumentException("해당 퀴즈를 찾을 수 없습니다."));
+
+        return mapperToResponseDto(quiz);
+    }
+
+    // id 기반 퀴즈 생성자 조회
     @Transactional(readOnly = true)
     public String getQuizCreatorName(Long quizId){
         Quiz quiz = quizRepository.findById(quizId).orElseThrow(()-> new IllegalArgumentException("해당 퀴즈를 찾을 수 없습니다. 퀴즈 id: "+ quizId));
         return quiz.getCreator().getName();
+    }
+
+    // shareKey 기반 퀴즈 생성자 조회
+    public String getQuizCreatorNameByShareKey(String shareKey){
+        Quiz quiz = quizRepository.findByShareKey(shareKey).orElseThrow(()-> new IllegalArgumentException("해당 퀴즈를 찾을 수 없습니다."));
+
+        return quiz.getCreator().getName();
+    }
+
+    // quiz -> QuizResponseDto
+    private QuizResponseDto mapperToResponseDto(Quiz quiz){
+        return QuizResponseDto.builder()
+                .title(quiz.getTitle())
+                .createdAt(quiz.getCreatedAt())
+                .creatorUserId(quiz.getCreator().getId())
+                .shareKey(quiz.getShareKey())
+                .build();
     }
 }

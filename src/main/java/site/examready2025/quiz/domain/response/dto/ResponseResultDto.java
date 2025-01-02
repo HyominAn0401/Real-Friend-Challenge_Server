@@ -9,7 +9,7 @@ import java.util.List;
 @Builder
 public class ResponseResultDto {
 
-    private Long quizId;
+//    private Long quizId;
     private Long responseId;
     private List<QuestionResultDto> results;
 }
