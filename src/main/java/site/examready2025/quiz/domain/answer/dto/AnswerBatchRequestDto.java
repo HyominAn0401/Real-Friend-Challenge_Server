@@ -7,6 +7,7 @@ import java.util.List;
 @Getter
 public class AnswerBatchRequestDto {
     private Long responseId;
-    private Long quizId;
+    //private Long quizId;
+    private String shareKey;
     private List<AnswerRequestDto> answers;
 }

@@ -5,6 +5,7 @@ import lombok.Getter;
 @Getter
 public class ResponseRequestDto {
 
-    private Long quizId;
+//    private Long quizId;
+    private String shareKey;
     private String userName;
 }

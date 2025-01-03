@@ -9,6 +9,7 @@ import site.examready2025.quiz.domain.answer.repository.AnswerRepository;
 import site.examready2025.quiz.domain.choice.entity.Choice;
 import site.examready2025.quiz.domain.choice.repository.ChoiceRepository;
 import site.examready2025.quiz.domain.question.repository.QuestionRepository;
+import site.examready2025.quiz.domain.quiz.repository.QuizRepository;
 import site.examready2025.quiz.domain.response.entity.Response;
 import site.examready2025.quiz.domain.response.repository.ResponseRepository;
 
@@ -23,15 +24,20 @@ public class AnswerService {
     private final ResponseRepository responseRepository;
     private final QuestionRepository questionRepository;
     private final ChoiceRepository choiceRepository;
+    private final QuizRepository quizRepository;
 
 
-    public void saveAnswers(Long responseId, Long quizId, List<AnswerRequestDto> answerRequestDtos){
+    // 정답 저장
+    public void saveAnswers(Long responseId, String shareKey, List<AnswerRequestDto> answerRequestDtos){
         Response response = responseRepository.findById(responseId).orElseThrow(()-> new IllegalArgumentException("해당 퀴즈 세션을 찾을 수 없습니다."));
 
+        Long quizId = quizRepository.findByShareKey(shareKey)
+                .orElseThrow(() -> new IllegalArgumentException("해당 퀴즈를 찾을 수 없습니다."))
+                .getId();
+
         for(AnswerRequestDto dto : answerRequestDtos){
-            // quizId, questionId, selectedChoiceId로 Choice를 검색
-            Choice choice= choiceRepository.findByQuizIdAndQuestionIdAndId(quizId, dto.getQuestionId(), dto.getSelectedChoiceId())
-                    .orElseThrow(()-> new IllegalArgumentException("quizId로 Choice를 찾을 수 없습니다."));
+            Choice choice = choiceRepository.findByQuizIdAndQuestionIdAndId(quizId, dto.getQuestionId(), dto.getSelectedChoiceId())
+                    .orElseThrow(()-> new IllegalArgumentException("quizId로 choice를 찾을 수 없습니다."));
 
             Answer answer = Answer.builder()
                     .response(response)
@@ -42,21 +48,21 @@ public class AnswerService {
         }
     }
 
-//    public void saveAnswers(Long responseId, List<AnswerRequestDto> answerRequestDtos){
+//    public void saveAnswers(Long responseId, Long quizId, List<AnswerRequestDto> answerRequestDtos){
+//        Response response = responseRepository.findById(responseId).orElseThrow(()-> new IllegalArgumentException("해당 퀴즈 세션을 찾을 수 없습니다."));
 //
 //        for(AnswerRequestDto dto : answerRequestDtos){
-//            Response response = responseRepository.findById(responseId).orElseThrow(()-> new IllegalArgumentException("해당 퀴즈 세션을 찾을 수 없습니다. response id : "+responseId));
-//            Question question = questionRepository.findById(dto.getQuestionId())
-//                    .orElseThrow(()-> new IllegalArgumentException("해당 질문을 찾을 수 없습니다. 질문 id : "+ dto.getQuestionId()));
-//
-//            Choice choice = choiceRepository.findById(dto.getSelectedChoiceId()).orElseThrow(()-> new IllegalArgumentException("해당 보기를 찾을 수 없습니다. 보기 id : "+dto.getSelectedChoiceId()));
+//            // quizId, questionId, selectedChoiceId로 Choice를 검색
+//            Choice choice= choiceRepository.findByQuizIdAndQuestionIdAndId(quizId, dto.getQuestionId(), dto.getSelectedChoiceId())
+//                    .orElseThrow(()-> new IllegalArgumentException("quizId로 Choice를 찾을 수 없습니다."));
 //
 //            Answer answer = Answer.builder()
 //                    .response(response)
-//                    .question(question)
+//                    .question(choice.getQuestion())
 //                    .selectedChoice(choice)
 //                    .build();
 //            answerRepository.save(answer);
 //        }
 //    }
+
 }

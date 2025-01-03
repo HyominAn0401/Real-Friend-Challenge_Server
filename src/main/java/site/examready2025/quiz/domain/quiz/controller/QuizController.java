@@ -14,17 +14,37 @@ import site.examready2025.quiz.domain.quiz.service.QuizService;
 public class QuizController {
     private final QuizService quizService;
 
+//    @PostMapping("/api/quizzes")
+//    public ResponseEntity<QuizResponseDto> createQuiz(@RequestBody QuizRequestDto requestDto) {
+//
+//        QuizResponseDto responseDto = quizService.createQuiz(requestDto);
+//
+//        return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
+//    }
+//
+//    // 퀴즈 생성자 이름 조회
+//    @GetMapping("/api/quizzes/{quizId}/creator")
+//    public String getQuizCreatorName(@PathVariable("quizId") Long quizId){
+//        return quizService.getQuizCreatorName(quizId);
+//    }
+
+    // 퀴즈 생성
     @PostMapping("/api/quizzes")
-    public ResponseEntity<QuizResponseDto> createQuiz(@RequestBody QuizRequestDto requestDto) {
-
+    public ResponseEntity<QuizResponseDto> createQuiz(@RequestBody QuizRequestDto requestDto){
         QuizResponseDto responseDto = quizService.createQuiz(requestDto);
-
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
 
     // 퀴즈 생성자 이름 조회
-    @GetMapping("/api/quizzes/{quizId}/creator")
-    public String getQuizCreatorName(@PathVariable("quizId") Long quizId){
-        return quizService.getQuizCreatorName(quizId);
+    @GetMapping("/api/quizzes/{shareKey}/creator")
+    public ResponseEntity<String> getQuizCreatorName(@PathVariable("shareKey") String shareKey){
+        String creatorName = quizService.getQuizCreatorNameByShareKey(shareKey);
+        return ResponseEntity.ok(creatorName);
+    }
+
+    @GetMapping("/api/quizzes/{shareKey}")
+    public ResponseEntity<QuizResponseDto> getQuiz(@PathVariable String shareKey){
+        QuizResponseDto responseDto = quizService.getQuizByShareKey(shareKey);
+        return ResponseEntity.ok(responseDto);
     }
 }
