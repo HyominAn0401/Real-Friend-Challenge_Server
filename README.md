@@ -1,4 +1,4 @@
-# Real-Friend-Challenge
+# Real-Friend-Challenge_Server
 👩‍🏫 [찐친고사] 친구들과 함께 우정을 테스트하는 퀴즈 플랫폼
 
 <br/>
