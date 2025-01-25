@@ -34,13 +34,13 @@
 
 <br/>
 
-## 사진넣기
-![퀴즈 생성]()
-![문제 생성]()
-![문제 풀기]()
-![채점표]()
-![등수 조회]()
-![SNS 공유]()
+## 실행 화면 
+
+|                                                                 퀴즈 생성                                                                  |                                                                 문제 풀이                                                                 | 문제 생성 |
+|:--------------------------------------------------------------------------------------------------------------------------------------:|:-------------------------------------------------------------------------------------------------------------------------------------:| :---: |
+| <img src="https://github.com/nunsongCookie/CookieSong-Backend/blob/main/src/main/resources/images/make_quiz.jpg?raw=true" width="300"> |<img src="https://github.com/nunsongCookie/CookieSong-Backend/blob/main/src/main/resources/images/start_solve.jpg?raw=true" width=300> | <img src="https://github.com/nunsongCookie/CookieSong-Backend/blob/main/src/main/resources/images/make_question.png?raw=true" width=300>
+| 정오표 | 등수 조회 | 카카오톡 공유 |
+| <img src="https://github.com/nunsongCookie/CookieSong-Backend/blob/main/src/main/resources/images/grade.jpg?raw=true" width=300> | <img src="https://github.com/nunsongCookie/CookieSong-Backend/blob/main/src/main/resources/images/rank.jpg?raw=true" width=300> | <img src="https://github.com/nunsongCookie/CookieSong-Backend/blob/main/src/main/resources/images/share_kakaotalk.jpg?raw=true" width=300> |
 
 <br/>
 
